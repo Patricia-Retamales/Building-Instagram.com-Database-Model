@@ -27,10 +27,6 @@ class Address(Base):
     person = relationship(Person)
 
 
-class Follower(Base):
-    __tablename__='follower'
-    user_from_id= Column(Integer, ForeignKey('user.id'),primary_key=True)
-    user_to_id= Column(Integer, ForeignKey('user.id'),primary_key=True)
 
 class User(Base):
     __tablename__='user'
@@ -40,17 +36,26 @@ class User(Base):
     lastname = Column(String(250))
     email = Column(String(250))
 
+class Follower(Base):
+    __tablename__='follower'
+    user_from_id= Column(Integer, ForeignKey('user.id'),primary_key=True)
+    user_to_id= Column(Integer, ForeignKey('user.id'),primary_key=True)
+    relationUser = relationship(User)
+
+
 class Comment(Base):
     __tablename__='comment'
     id= Column(Integer, primary_key=True)
     comment_text = Column(String(250))
     author_id=Column(Integer, ForeignKey('user.id'))
     post_id=Column(Integer, ForeignKey('post.id'))
+    relationUser = relationship(User)
 
 class Post(Base):
     __tablename__='post'
     id= Column(Integer, primary_key=True)
     user_id=Column(Integer, ForeignKey('user.id'))
+    relationComment =relationship(Comment)
 
 class Media(Base):
     __tablename__='media'
@@ -74,7 +79,7 @@ class Seguir(Base):
     id= Column(Integer, primary_key=True)
     seguidores= Column(String(250))
     seguidores_id=Column(Integer, ForeignKey('user.id'))
-
+    relationUser = relationship(User)
 
 
 class Historia(Base):
@@ -82,6 +87,7 @@ class Historia(Base):
     id= Column(Integer, primary_key=True)
     url= Column(String(250))
     url_id=Column(Integer, ForeignKey('user.id'))
+    relationUser = relationship(User)
 
 class Tienda(Base):
     __tablename__='tienda'
@@ -89,7 +95,9 @@ class Tienda(Base):
     nombre_de_obj=Column(String(250))
     url= Column(String(250))
     url_id=Column(Integer, ForeignKey('user.id'))
-
+    relationUser = relationship(User)
+    relationFollower = relationship(Follower)
+    relationHistoria = relationship(Historia)
 
 
 
